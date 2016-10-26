@@ -48,7 +48,12 @@ public class LibraryDAO {
 		
 	}
 
-	// If searchconditions is null, all values from database will be returned
+	/**
+	 * 
+	 * @param searchConditions has to be NULL if no restrictions are set 
+	 * @return resultset
+	 * @throws SQLException
+	 */
 	public ResultSet getLibraryFromDatabase(HashMap<String, String> searchConditions) throws SQLException {
 		ResultSet result = null;
 		StringBuilder queryStringBuilder = new StringBuilder();
@@ -56,9 +61,15 @@ public class LibraryDAO {
 			queryStringBuilder.append("SELECT * FROM " + TABLE_NAME + ";");
 		} else {
 			queryStringBuilder.append("SELECT * FROM " + TABLE_NAME + " WHERE ");
+			int iterator = 0;
 			for(String s : searchConditions.keySet()) {
-				//CONTINUE HERE
+				if(iterator != 0) {
+					queryStringBuilder.append(" AND ");
+				}
+				queryStringBuilder.append(s + " LIKE '%" + searchConditions.get(s) + "%'");
+				iterator++;
 			}
+			queryStringBuilder.append(";");
 
 		}
 		result = connector.executeSelectQuery(queryStringBuilder.toString());
