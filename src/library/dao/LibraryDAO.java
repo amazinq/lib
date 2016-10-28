@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Set;
 
 public class LibraryDAO {
 
@@ -40,12 +41,47 @@ public class LibraryDAO {
 		connector.executeUpdateQuery(CREATE_TABLE_QUERY);
 	}
 
-	public void updateLibraryElement(HashMap<String, String> valuesToUpdate) {
-
+	public void updateLibraryElement(int id, HashMap<String, String> valuesToUpdate) throws SQLException {
+		StringBuilder queryStringBuilder = new StringBuilder();
+		queryStringBuilder.append("UPDATE " + TABLE_NAME + " SET ");
+		int iterator = 0;
+		for(String s : valuesToUpdate.keySet()) {
+			if(iterator != 0) {
+				queryStringBuilder.append(", ");
+			}
+			queryStringBuilder.append(s + "=" + valuesToUpdate.get(s));
+			iterator++;
+		}
+		queryStringBuilder.append(" WHERE " + COLUMN_ID + "=" + id + ";");
+		connector.executeUpdateQuery(queryStringBuilder.toString());
 	}
 	
-	public void insertLibraryElement(HashMap<String, String> valuesToInsert) {
-		
+	public void insertLibraryElement(HashMap<String, String> valuesToInsert) throws SQLException {
+		StringBuilder queryStringBuilder = new StringBuilder();
+		if(valuesToInsert != null) {
+			queryStringBuilder.append("INSERT INTO " + TABLE_NAME + " (");
+			Set<String> keySet = valuesToInsert.keySet();
+			int iterator = 0;
+			for(String s : keySet) {
+				if(iterator != 0) {
+					queryStringBuilder.append(", ");
+				}
+				queryStringBuilder.append(s);
+				iterator++;
+			}
+			iterator = 0;
+			queryStringBuilder.append(") VALUES (");
+			for(String s : keySet) {
+				if(iterator != 0) {
+					queryStringBuilder.append(", ");
+				}
+				queryStringBuilder.append(valuesToInsert.get(s));
+				iterator++;
+			}
+			queryStringBuilder.append(");");
+			connector.executeUpdateQuery(queryStringBuilder.toString());
+			
+		}
 	}
 
 	/**
