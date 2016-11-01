@@ -2,12 +2,14 @@ package library.controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import library.dao.LibraryDAO;
 import library.gui.Frame;
 import library.gui.MenuBar;
 import library.gui.Panel;
+import library.model.Movie;
 import library.util.Util;
 
 public class Controller {
@@ -47,14 +49,15 @@ public class Controller {
 	 * @param searchConditions
 	 * @return map of database data. If an error occurs, null will be returned
 	 */
-	public HashMap<String,String> getDataFromLibrary(HashMap<String,String> searchConditions) {
+	public ArrayList<Movie> getDataFromLibrary(HashMap<String,String> searchConditions) {
 		ResultSet set = null;
 		try {
 			set = dao.getLibraryFromDatabase(searchConditions);
+			return Util.parseResultSetToMovieList(set);
 		} catch(SQLException e) {
 			//@TODO: Do exceptionhandling
 		}
-		return Util.convertResultSetToHashMap(set);
+		return null;
 	}
 
 }
