@@ -9,6 +9,11 @@ import javax.swing.JTextField;
 
 public class Panel extends JSplitPane {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8846632724231527592L;
+
 	public Panel() {
 		setDividerLocation(Frame.WIDTH/2);
 		JPanel leftPanel = new JPanel();

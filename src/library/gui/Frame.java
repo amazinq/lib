@@ -1,9 +1,6 @@
 package library.gui;
 
-import java.awt.Toolkit;
-
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 
 public class Frame extends JFrame {
 
